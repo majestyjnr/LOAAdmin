@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens.dart';
 import 'package:LOAAdmin/screens/auth/Signin.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +98,7 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                         hintText: 'Email',
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: Icon(Icons.mail),
                       ),
                     ),
                   ),
@@ -140,10 +141,15 @@ class _SignupState extends State<Signup> {
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () {
-                      print('Login Button Clicked!');
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                        builder: (context) {
+                          return Dashboard();
+                        },
+                      ), (Route<dynamic> route) => false);
                     },
                     child: Text(
-                      'Login',
+                      'Signup',
                       style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,

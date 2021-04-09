@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens.dart';
 import 'package:LOAAdmin/screens/auth/Signup.dart';
 import 'package:flutter/material.dart';
 
@@ -115,7 +116,12 @@ class _SigninState extends State<Signin> {
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () {
-                      print('Login Button Clicked!');
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                        builder: (context) {
+                          return Dashboard();
+                        },
+                      ), (Route<dynamic> route) => false);
                     },
                     child: Text(
                       'Login',
