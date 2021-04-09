@@ -158,7 +158,16 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return AddVideo();
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -197,7 +206,16 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return AddFaq();
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

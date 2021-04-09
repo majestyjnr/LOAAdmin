@@ -1,0 +1,144 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
+
+class AddVideo extends StatefulWidget {
+  AddVideo({Key key}) : super(key: key);
+
+  @override
+  _AddVideoState createState() => _AddVideoState();
+}
+
+class _AddVideoState extends State<AddVideo> {
+  String dropdownValue = 'Acquisition Section';
+  File _video;
+
+  VideoPlayerController _videoPlayerController;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0.5,
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Add Video',
+          style: TextStyle(
+            color: Colors.blue,
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Image(
+            image: AssetImage('assets/images/uew.png'),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.cancel,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text('Select Video Section:'),
+              DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValue,
+                items: <String>[
+                  'Acquisition Section',
+                  'Circulation Section',
+                  'Information Help Desk Section',
+                  'Lending Section',
+                  'Quick Reference Section',
+                  'Reference Section',
+                  'Security Section',
+                  'Special Section'
+                ].map<DropdownMenuItem<String>>(
+                  (String value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(value),
+                    );
+                  },
+                ).toList(),
+                onChanged: (String newLevel) {
+                  setState(() {
+                    dropdownValue = newLevel;
+                  });
+                },
+              ),
+              TextField(
+                maxLines: null,
+                minLines: 3,
+                decoration: InputDecoration(
+                  labelText: 'Video Description',
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.attach_file,
+                    size: 30,
+                  ),
+                  onPressed: () async {
+                    final file = await ImagePicker.pickVideo(
+                      source: ImageSource.gallery,
+                    );
+                    _video = file;
+                    _videoPlayerController = VideoPlayerController.file(_video)
+                      ..initialize().then((_) {
+                        setState(() {
+                          _videoPlayerController.play();
+                        });
+                      });
+                  }),
+              SizedBox(
+                height: 15,
+              ),
+              Text('Attach Video'),
+              if (_video != null)
+                _videoPlayerController.value.initialized
+                    ? AspectRatio(
+                        aspectRatio: _videoPlayerController.value.aspectRatio,
+                        child: VideoPlayer(
+                          _videoPlayerController,
+                        ),
+                      )
+                    : Container(),
+              SizedBox(
+                height: 50,
+              ),
+              MaterialButton(
+                minWidth: double.infinity,
+                height: 40,
+                child: Text(
+                  'Upload Video',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {},
+                elevation: 0.5,
+                color: Colors.blue,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -27,6 +27,7 @@ dependencies:
   image_picker: 
   toast:
   youtube_player_flutter:
+  video_player: ^0.10.2+1
   firebase_database: ^3.1.1
   firebase_auth: ^0.16.1
   shared_preferences: ^0.5.10

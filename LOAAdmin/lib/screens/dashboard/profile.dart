@@ -65,15 +65,19 @@ class _ProfileState extends State<Profile> {
                     onTap: () {
                       // Open Edit Profile
                     },
-                    title: Text('Solomon Aidoo Junior'),
-                    subtitle: Text('aidoojuniorsolomon@gmail.com'),
+                    title: Center(
+                      child: Text('Solomon Aidoo Junior'),
+                    ),
+                    subtitle: Center(
+                      child: Text('aidoojuniorsolomon@gmail.com'),
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Card(
-                  elevation: 4,
+                  elevation: 2,
                   margin: EdgeInsets.fromLTRB(20, 8, 20, 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
