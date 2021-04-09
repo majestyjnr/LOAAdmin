@@ -166,11 +166,7 @@ class _SignupState extends State<Signup> {
                           },
                         ), (Route<dynamic> route) => false);
                       },
-                      child: Text('Sign In'),
-                    ),
-                    FlatButton(
-                      onPressed: () {},
-                      child: Text('Forgot Password?'),
+                      child: Text('Have an account? Sign In'),
                     ),
                   ],
                 ),
