@@ -5,6 +5,6 @@ export 'screens/auth/RecoveryEmailSent.dart';
 
 export 'screens/dashboard/AddFaq.dart';
 export 'screens/dashboard/AddVideo.dart';
-export 'screens/dashboard/Questions.dart';
+export 'screens/dashboard/questions/Questions.dart';
 export 'screens/dashboard/dashboard.dart';
 export 'screens/dashboard/profile.dart';
