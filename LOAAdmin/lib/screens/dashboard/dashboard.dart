@@ -1,6 +1,6 @@
 import 'package:LOAAdmin/screens.dart';
-import 'package:LOAAdmin/screens/dashboard/ManageFAQs.dart';
-import 'package:LOAAdmin/screens/dashboard/ManageVideos.dart';
+import 'package:LOAAdmin/screens/dashboard/management/ManageFAQs.dart';
+import 'package:LOAAdmin/screens/dashboard/management/ManageVideos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
