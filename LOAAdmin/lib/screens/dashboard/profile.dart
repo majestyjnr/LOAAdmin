@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key key}) : super(key: key);
@@ -97,6 +98,26 @@ class _ProfileState extends State<Profile> {
                         },
                         leading: Icon(CupertinoIcons.padlock),
                         title: Text('Change Password'),
+                        trailing: Icon(CupertinoIcons.forward),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Card(
+                  elevation: 2,
+                  margin: EdgeInsets.fromLTRB(20, 8, 20, 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        onTap: () {},
+                        leading: Icon(FontAwesomeIcons.signOutAlt),
+                        title: Text('Logout'),
                         trailing: Icon(CupertinoIcons.forward),
                       ),
                     ],
