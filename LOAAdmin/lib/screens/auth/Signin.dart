@@ -150,7 +150,16 @@ class _SigninState extends State<Signin> {
                       child: Text('Sign Up'),
                     ),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ForgotPassword();
+                            },
+                          ),
+                        );
+                      },
                       child: Text('Forgot Password?'),
                     ),
                   ],

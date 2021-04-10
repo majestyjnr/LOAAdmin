@@ -1,5 +1,7 @@
 export 'screens/auth/Signin.dart';
 export 'screens/auth/Signup.dart';
+export 'screens/auth/ForgotPassword.dart';
+export 'screens/auth/RecoveryEmailSent.dart';
 
 export 'screens/dashboard/AddFaq.dart';
 export 'screens/dashboard/AddVideo.dart';

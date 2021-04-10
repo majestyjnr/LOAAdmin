@@ -44,6 +44,9 @@ class _AddVideoState extends State<AddVideo> {
             ),
             onPressed: () {
               Navigator.pop(context);
+              (_video != null)
+                  ? (_videoPlayerController.value.isPlaying)
+                  : _videoPlayerController.pause();
             },
           ),
         ],
@@ -112,15 +115,53 @@ class _AddVideoState extends State<AddVideo> {
                 height: 15,
               ),
               Text('Attach Video'),
+              SizedBox(
+                height: 15,
+              ),
               if (_video != null)
                 _videoPlayerController.value.initialized
-                    ? AspectRatio(
-                        aspectRatio: _videoPlayerController.value.aspectRatio,
-                        child: VideoPlayer(
-                          _videoPlayerController,
+                    ? Material(
+                        child: InkWell(
+                          child: AspectRatio(
+                            aspectRatio:
+                                _videoPlayerController.value.aspectRatio,
+                            child: VideoPlayer(
+                              _videoPlayerController,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              if (_videoPlayerController.value.isPlaying) {
+                                _videoPlayerController.pause();
+                              } else {
+                                _videoPlayerController.play();
+                              }
+                            });
+                          },
                         ),
                       )
                     : Container(),
+              (_video != null)
+                  ? (_videoPlayerController.value.isPlaying)
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Playing...',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Paused.',
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                  : Container(),
               SizedBox(
                 height: 50,
               ),
