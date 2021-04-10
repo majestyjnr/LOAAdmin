@@ -1,4 +1,6 @@
 import 'package:LOAAdmin/screens.dart';
+import 'package:LOAAdmin/screens/dashboard/ManageFAQs.dart';
+import 'package:LOAAdmin/screens/dashboard/ManageVideos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -260,7 +262,16 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ManageVideos();
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -299,7 +310,16 @@ class _DashboardState extends State<Dashboard> {
                         ],
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ManageFAQs();
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
