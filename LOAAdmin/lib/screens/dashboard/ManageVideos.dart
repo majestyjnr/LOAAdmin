@@ -10,8 +10,36 @@ class ManageVideos extends StatefulWidget {
 class _ManageVideosState extends State<ManageVideos> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        brightness: Brightness.light,
+        elevation: 0.5,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Manage Videos',
+          style: TextStyle(
+            color: Colors.blue,
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Image(
+            image: AssetImage('assets/images/uew.png'),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.cancel,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
     );
   }
 }
