@@ -33,7 +33,7 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.notifications_active,
+              Icons.chat,
             ),
             onPressed: () {
               Navigator.push(
