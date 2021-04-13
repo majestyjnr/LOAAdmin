@@ -65,93 +65,126 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 30,
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: _firstname,
-                      decoration: InputDecoration(
-                        hintText: 'Firstname',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.person),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    controller: _firstname,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
                       ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Firstname',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.person),
                     ),
                   ),
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: _lastname,
-                      decoration: InputDecoration(
-                        hintText: 'Lastname',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.person),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    controller: _lastname,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
                       ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Lastname',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.person),
                     ),
                   ),
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _email,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.mail),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _email,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
                       ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Email',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.mail),
                     ),
                   ),
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: _position,
-                      decoration: InputDecoration(
-                        hintText: 'Position',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.work_rounded),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    controller: _position,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
                       ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Position',
+                      prefixIcon: Icon(Icons.work_rounded),
                     ),
                   ),
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      controller: _password,
-                      obscureText: obscured,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Password',
-                        prefixIcon: Icon(Icons.security),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (obscured) {
-                                obscured = false;
-                              } else {
-                                obscured = true;
-                              }
-                            });
-                          },
-                          icon: Icon(
-                            obscured ? Icons.visibility_off : Icons.visibility,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    controller: _password,
+                    obscureText: obscured,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.security),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            if (obscured) {
+                              obscured = false;
+                            } else {
+                              obscured = true;
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          obscured ? Icons.visibility_off : Icons.visibility,
                         ),
                       ),
                     ),
@@ -162,7 +195,7 @@ class _SignupState extends State<Signup> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 55,
+                  height: 45,
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () {
@@ -183,7 +216,7 @@ class _SignupState extends State<Signup> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

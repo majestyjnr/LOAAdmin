@@ -29,7 +29,7 @@ class _SigninState extends State<Signin> {
                       top: 20,
                     ),
                     child: Container(
-                      height: 70,
+                      height: 80,
                       width: 200,
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -61,47 +61,60 @@ class _SigninState extends State<Signin> {
                 SizedBox(
                   height: 40,
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: 'Email',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.person),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
                       ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Email',
+                      border: InputBorder.none,
+                      prefixIcon: Icon(Icons.person),
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Card(
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: TextField(
-                      keyboardType: TextInputType.text,
-                      obscureText: obscured,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Password',
-                        prefixIcon: Icon(Icons.security),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (obscured) {
-                                obscured = false;
-                              } else {
-                                obscured = true;
-                              }
-                            });
-                          },
-                          icon: Icon(
-                            obscured ? Icons.visibility_off : Icons.visibility,
-                          ),
+                Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: TextField(
+                    keyboardType: TextInputType.text,
+                    obscureText: obscured,
+                    decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                        ),
+                      ),
+                      labelText: 'Password',
+                      prefixIcon: Icon(Icons.security),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            if (obscured) {
+                              obscured = false;
+                            } else {
+                              obscured = true;
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          obscured ? Icons.visibility_off : Icons.visibility,
                         ),
                       ),
                     ),
@@ -112,7 +125,7 @@ class _SigninState extends State<Signin> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 55,
+                  height: 45,
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () {

@@ -49,18 +49,24 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               SizedBox(
                 height: 20,
               ),
-              Card(
-                elevation: 1.5,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      hintText: 'Email',
-                      border: InputBorder.none,
-                      prefixIcon: Icon(Icons.mail),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.blue,
+                      ),
                     ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
+                    prefixIcon: Icon(Icons.mail),
                   ),
                 ),
               ),
