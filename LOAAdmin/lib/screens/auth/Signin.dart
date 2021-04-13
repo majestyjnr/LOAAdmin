@@ -64,7 +64,7 @@ class _SigninState extends State<Signin> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
@@ -81,7 +81,7 @@ class _SigninState extends State<Signin> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.text,
                       obscureText: obscured,

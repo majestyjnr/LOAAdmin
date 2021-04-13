@@ -11,7 +11,12 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool obscured = true;
-  
+  TextEditingController _firstname = new TextEditingController();
+  TextEditingController _lastname = new TextEditingController();
+  TextEditingController _email = new TextEditingController();
+  TextEditingController _position = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +70,10 @@ class _SignupState extends State<Signup> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.text,
+                      controller: _firstname,
                       decoration: InputDecoration(
                         hintText: 'Firstname',
                         border: InputBorder.none,
@@ -79,9 +85,10 @@ class _SignupState extends State<Signup> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.text,
+                      controller: _lastname,
                       decoration: InputDecoration(
                         hintText: 'Lastname',
                         border: InputBorder.none,
@@ -93,9 +100,10 @@ class _SignupState extends State<Signup> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.emailAddress,
+                      controller: _email,
                       decoration: InputDecoration(
                         hintText: 'Email',
                         border: InputBorder.none,
@@ -107,13 +115,14 @@ class _SignupState extends State<Signup> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.text,
+                      controller: _position,
                       decoration: InputDecoration(
                         hintText: 'Position',
                         border: InputBorder.none,
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon: Icon(Icons.work_rounded),
                       ),
                     ),
                   ),
@@ -121,9 +130,10 @@ class _SignupState extends State<Signup> {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: TextField(
                       keyboardType: TextInputType.text,
+                      controller: _password,
                       obscureText: obscured,
                       decoration: InputDecoration(
                         border: InputBorder.none,
