@@ -1,6 +1,10 @@
 import 'package:LOAAdmin/screens.dart';
 import 'package:LOAAdmin/screens/auth/Signin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:toast/toast.dart';
 
 class Signup extends StatefulWidget {
   Signup({Key key}) : super(key: key);
@@ -11,6 +15,7 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool obscured = true;
+  bool isLoading = false;
   TextEditingController _firstname = new TextEditingController();
   TextEditingController _lastname = new TextEditingController();
   TextEditingController _email = new TextEditingController();
@@ -195,21 +200,74 @@ class _SignupState extends State<Signup> {
                   height: 45,
                   child: FlatButton(
                     color: Colors.blue,
-                    onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                        builder: (context) {
-                          return Dashboard();
-                        },
-                      ), (Route<dynamic> route) => false);
+                    onPressed: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      try {
+                        UserCredential user = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                          email: _email.text,
+                          password: _password.text,
+                        );
+
+                        if (user != null) {
+                          // Get The Current Admin
+                          User adminCurrent = FirebaseAuth.instance.currentUser;
+
+                          // Save the user details into the database
+                          FirebaseFirestore.instance
+                              .collection('admins')
+                              .doc(adminCurrent.uid)
+                              .set({
+                            'firstName': _firstname.text,
+                            'lastName': _lastname.text,
+                            'email': _email.text,
+                            'position': _position.text,
+                            'role': 'Admin'
+                          });
+
+                          User signInUser = FirebaseAuth.instance.currentUser;
+                          signInUser.sendEmailVerification().then((value) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                              builder: (context) {
+                                return Dashboard();
+                              },
+                            ), (Route<dynamic> route) => false);
+                          }).catchError((onError) {
+                            print(onError);
+                          });
+                        }
+                      } catch (e) {
+                        print(e);
+                        Toast.show(
+                          '$e',
+                          context,
+                          duration: Toast.LENGTH_LONG,
+                          gravity: Toast.BOTTOM,
+                        );
+                        setState(() {
+                          isLoading = false;
+                        });
+                        _firstname.text = '';
+                        _lastname.text = '';
+                        _email.text = '';
+                        _position.text = '';
+                        _password.text = '';
+                      }
                     },
-                    child: Text(
-                      'Signup',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: isLoading
+                        ? NutsActivityIndicator(
+                            activeColor: Colors.white,
+                          )
+                        : Text(
+                            'Signup',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
                 SizedBox(
