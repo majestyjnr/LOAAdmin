@@ -23,16 +23,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_storage: ^3.1.6
+  firebase_storage: ^8.0.3
   image_picker: 
   toast:
   youtube_player_flutter:
-  video_player: ^0.10.2+1
-  firebase_database: ^3.1.1
-  firebase_auth: ^0.16.1
-  shared_preferences: ^0.5.10
+  video_player: ^2.1.1
+  firebase_database: ^6.1.2
+  firebase_core: ^1.0.3
+  firebase_auth: ^1.0.3
+  shared_preferences: ^2.0.5
   font_awesome_flutter:
-  cloud_firestore:
+  cloud_firestore: ^1.0.4
   nuts_activity_indicator: 
 
   # The following adds the Cupertino Icons font to your application.

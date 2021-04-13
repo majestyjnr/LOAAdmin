@@ -100,10 +100,10 @@ class _AddVideoState extends State<AddVideo> {
                     size: 30,
                   ),
                   onPressed: () async {
-                    final file = await ImagePicker.pickVideo(
+                    final file = await ImagePicker.platform.pickVideo(
                       source: ImageSource.gallery,
                     );
-                    _video = file;
+                    _video = File(file.path);
                     _videoPlayerController = VideoPlayerController.file(_video)
                       ..initialize().then((_) {
                         setState(() {
@@ -119,7 +119,7 @@ class _AddVideoState extends State<AddVideo> {
                 height: 15,
               ),
               if (_video != null)
-                _videoPlayerController.value.initialized
+                _videoPlayerController.value.isInitialized
                     ? Material(
                         child: InkWell(
                           child: AspectRatio(

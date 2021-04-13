@@ -11,6 +11,7 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   bool obscured = true;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +100,20 @@ class _SignupState extends State<Signup> {
                         hintText: 'Email',
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.mail),
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        hintText: 'Position',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(Icons.person),
                       ),
                     ),
                   ),
