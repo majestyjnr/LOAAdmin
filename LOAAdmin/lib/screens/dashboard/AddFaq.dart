@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'package:uuid/uuid.dart';
 
 class AddFaq extends StatefulWidget {
   AddFaq({Key key}) : super(key: key);
@@ -11,7 +10,6 @@ class AddFaq extends StatefulWidget {
 }
 
 class _AddFaqState extends State<AddFaq> {
-  var uuid = Uuid();
   TextEditingController _faqQuestion = new TextEditingController();
   TextEditingController _faqAnswer = new TextEditingController();
   @override
@@ -83,10 +81,8 @@ class _AddFaqState extends State<AddFaq> {
                 ),
                 onPressed: () {
                   try {
-                    var id = uuid.v1(); // Generates a unique id for the FAQ
                     // Save the user details into the database
                     FirebaseFirestore.instance.collection('FAQs').add({
-                      'id': id,
                       'faqQuestion': _faqQuestion.text,
                       'faqAnswer': _faqAnswer.text,
                     }).then((value) {
