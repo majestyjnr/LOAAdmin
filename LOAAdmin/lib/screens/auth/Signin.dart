@@ -23,7 +23,7 @@ class _SigninState extends State<Signin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
@@ -153,36 +153,42 @@ class _SigninState extends State<Signin> {
                         if (user != null) {
                           // Get The Current Admin
                           User adminCurrent = FirebaseAuth.instance.currentUser;
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                            builder: (context) {
+                              return Dashboard();
+                            },
+                          ), (Route<dynamic> route) => false);
+                          // // Get the admins collection from firestore
+                          // CollectionReference admins =
+                          //     FirebaseFirestore.instance.collection('admins');
 
-                          // Get the admins collection from firestore
-                          CollectionReference admins =
-                              FirebaseFirestore.instance.collection('admins');
+                          // admins
+                          //     .doc(adminCurrent.uid)
+                          //     .get()
+                          //     .then<dynamic>((snapshot) async {
+                          //   setState(() {
+                          //     data = snapshot.data();
+                          //   });
+                          // });
+                          // print(data['role']);
 
-                          admins
-                              .doc(adminCurrent.uid)
-                              .get()
-                              .then<dynamic>((snapshot) async {
-                            setState(() {
-                              data = snapshot.data();
-                            });
-                          });
-
-                          if (data['role'] == 'Admin') {
-                            // Navigate to Dashboard
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                              builder: (context) {
-                                return Dashboard();
-                              },
-                            ), (Route<dynamic> route) => false);
-                          } else {
-                            Toast.show(
-                              'Access denied.',
-                              context,
-                              duration: Toast.LENGTH_LONG,
-                              gravity: Toast.BOTTOM,
-                            );
-                          }
+                          // if (data['role'] == 'Admin') {
+                          //   // Navigate to Dashboard
+                          //   Navigator.of(context).pushAndRemoveUntil(
+                          //       MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return Dashboard();
+                          //     },
+                          //   ), (Route<dynamic> route) => false);
+                          // } else {
+                          //   Toast.show(
+                          //     'Access denied.',
+                          //     context,
+                          //     duration: Toast.LENGTH_LONG,
+                          //     gravity: Toast.BOTTOM,
+                          //   );
+                          // }
                         }
                       } catch (e) {
                         print(e);
