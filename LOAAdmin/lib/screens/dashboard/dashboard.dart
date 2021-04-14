@@ -111,6 +111,9 @@ class _DashboardState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 10,
+            ),
             Container(
               height: 200,
               decoration: BoxDecoration(

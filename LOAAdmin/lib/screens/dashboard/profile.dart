@@ -1,3 +1,5 @@
+import 'package:LOAAdmin/screens/auth/Signin.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +12,47 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  _showDialog(BuildContext context) {
+    CupertinoAlertDialog alert = CupertinoAlertDialog(
+      title: Text('Message'),
+      content: Text('Do you really want to logout?'),
+      actions: <Widget>[
+        CupertinoDialogAction(
+          child: Text('No'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        CupertinoDialogAction(
+          isDestructiveAction: true,
+          child: Text('Yes'),
+          onPressed: () async {
+            // SharedPreferences prefs = await SharedPreferences.getInstance();
+            // prefs.getString('studentLevel');
+            // prefs.getString('studentName');
+            // prefs.getString('studentEmail');
+            // prefs.getString('studentPassword');
+            await FirebaseAuth.instance.signOut().then((value) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => Signin(),
+                ),
+                (Route<dynamic> route) => false,
+              );
+            });
+          },
+        ),
+      ],
+    );
+
+    return showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +158,9 @@ class _ProfileState extends State<Profile> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        onTap: () {},
+                        onTap: () {
+                          _showDialog(context);
+                        },
                         leading: Icon(FontAwesomeIcons.signOutAlt),
                         title: Text('Logout'),
                         trailing: Icon(CupertinoIcons.forward),
