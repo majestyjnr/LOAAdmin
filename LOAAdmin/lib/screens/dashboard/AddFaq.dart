@@ -85,7 +85,7 @@ class _AddFaqState extends State<AddFaq> {
                   try {
                     var id = uuid.v1();
                     // Save the user details into the database
-                    FirebaseFirestore.instance.collection('admins').add({
+                    FirebaseFirestore.instance.collection('FAQs').add({
                       'id': id,
                       'faqQuestion': _faqQuestion.text,
                       'faqAnswer': _faqAnswer.text,
