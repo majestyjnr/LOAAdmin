@@ -184,6 +184,9 @@ class _SigninState extends State<Signin> {
                                   },
                                 ), (Route<dynamic> route) => false);
                               } else {
+                                setState(() {
+                                  isLoading = false;
+                                });
                                 Toast.show(
                                   'Access denied.',
                                   context,
@@ -193,6 +196,17 @@ class _SigninState extends State<Signin> {
                               }
                             }
                           });
+                          // .catchError(() {
+                          //   setState(() {
+                          //     isLoading = false;
+                          //   });
+                          //   Toast.show(
+                          //     'Access denied.',
+                          //     context,
+                          //     duration: Toast.LENGTH_LONG,
+                          //     gravity: Toast.TOP,
+                          //   );
+                          // });
                         }
                       } catch (e) {
                         print(e);
