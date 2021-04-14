@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
+import 'package:uuid/uuid.dart';
 
 class AddFaq extends StatefulWidget {
   AddFaq({Key key}) : super(key: key);
@@ -8,6 +11,9 @@ class AddFaq extends StatefulWidget {
 }
 
 class _AddFaqState extends State<AddFaq> {
+  var uuid = Uuid();
+  TextEditingController _faqQuestion = new TextEditingController();
+  TextEditingController _faqAnswer = new TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +55,9 @@ class _AddFaqState extends State<AddFaq> {
                 minLines: 1,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
+                controller: _faqQuestion,
                 decoration: InputDecoration(
-                  labelText: 'FAQ Title',
+                  labelText: 'FAQ Question',
                 ),
               ),
               SizedBox(
@@ -60,6 +67,7 @@ class _AddFaqState extends State<AddFaq> {
                 minLines: 6,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
+                controller: _faqAnswer,
                 decoration: InputDecoration(
                   labelText: 'FAQ Answer',
                 ),
@@ -73,7 +81,38 @@ class _AddFaqState extends State<AddFaq> {
                   'Add FAQ',
                   style: TextStyle(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  try {
+                    var id = uuid.v1();
+                    // Save the user details into the database
+                    FirebaseFirestore.instance.collection('admins').add({
+                      'id': id,
+                      'faqQuestion': _faqQuestion.text,
+                      'faqAnswer': _faqAnswer.text,
+                    }).then((value) {
+                      Toast.show(
+                        'FAQ added successfully.',
+                        context,
+                        duration: Toast.LENGTH_LONG,
+                        gravity: Toast.TOP,
+                      );
+                    }).catchError((value) {
+                      Toast.show(
+                        'Error adding FAQ.',
+                        context,
+                        duration: Toast.LENGTH_LONG,
+                        gravity: Toast.TOP,
+                      );
+                    });
+                  } catch (e) {
+                    Toast.show(
+                      'Error saving FAQ. Please try again',
+                      context,
+                      duration: Toast.LENGTH_LONG,
+                      gravity: Toast.TOP,
+                    );
+                  }
+                },
                 elevation: 0.5,
                 color: Colors.blue,
               ),
