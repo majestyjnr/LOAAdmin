@@ -3,6 +3,7 @@ import 'package:LOAAdmin/screens/auth/Signup.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:toast/toast.dart';
 
@@ -75,6 +76,11 @@ class _SigninState extends State<Signin> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _email,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -101,6 +107,11 @@ class _SigninState extends State<Signin> {
                     keyboardType: TextInputType.text,
                     obscureText: obscured,
                     controller: _password,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -143,6 +154,7 @@ class _SigninState extends State<Signin> {
                       setState(() {
                         isLoading = true;
                       });
+
                       try {
                         UserCredential user = await FirebaseAuth.instance
                             .signInWithEmailAndPassword(
@@ -151,44 +163,36 @@ class _SigninState extends State<Signin> {
                         );
 
                         if (user != null) {
-                          // Get The Current Admin
-                          User adminCurrent = FirebaseAuth.instance.currentUser;
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                            builder: (context) {
-                              return Dashboard();
-                            },
-                          ), (Route<dynamic> route) => false);
-                          // // Get the admins collection from firestore
-                          // CollectionReference admins =
-                          //     FirebaseFirestore.instance.collection('admins');
+                          // Get the admins collection from firestore
+                          CollectionReference admins =
+                              FirebaseFirestore.instance.collection('admins');
 
-                          // admins
-                          //     .doc(adminCurrent.uid)
-                          //     .get()
-                          //     .then<dynamic>((snapshot) async {
-                          //   setState(() {
-                          //     data = snapshot.data();
-                          //   });
-                          // });
-                          // print(data['role']);
-
-                          // if (data['role'] == 'Admin') {
-                          //   // Navigate to Dashboard
-                          //   Navigator.of(context).pushAndRemoveUntil(
-                          //       MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return Dashboard();
-                          //     },
-                          //   ), (Route<dynamic> route) => false);
-                          // } else {
-                          //   Toast.show(
-                          //     'Access denied.',
-                          //     context,
-                          //     duration: Toast.LENGTH_LONG,
-                          //     gravity: Toast.BOTTOM,
-                          //   );
-                          // }
+                          admins
+                              .doc(user.user.uid)
+                              .get()
+                              .then<dynamic>((snapshot) async {
+                            if (snapshot.data() != null) {
+                              setState(() {
+                                data = snapshot.data();
+                              });
+                              if (data['role'] == 'Admin') {
+                                // Navigate to Dashboard
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                  builder: (context) {
+                                    return Dashboard();
+                                  },
+                                ), (Route<dynamic> route) => false);
+                              } else {
+                                Toast.show(
+                                  'Access denied.',
+                                  context,
+                                  duration: Toast.LENGTH_LONG,
+                                  gravity: Toast.TOP,
+                                );
+                              }
+                            }
+                          });
                         }
                       } catch (e) {
                         print(e);
@@ -196,7 +200,7 @@ class _SigninState extends State<Signin> {
                           '$e',
                           context,
                           duration: Toast.LENGTH_LONG,
-                          gravity: Toast.BOTTOM,
+                          gravity: Toast.TOP,
                         );
                         setState(() {
                           isLoading = false;

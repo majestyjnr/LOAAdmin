@@ -3,6 +3,7 @@ import 'package:LOAAdmin/screens/auth/Signin.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:toast/toast.dart';
 
@@ -77,6 +78,11 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _firstname,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -98,6 +104,11 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _lastname,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -119,6 +130,11 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.emailAddress,
                     controller: _email,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -140,6 +156,11 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _position,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -162,6 +183,11 @@ class _SignupState extends State<Signup> {
                     keyboardType: TextInputType.text,
                     controller: _password,
                     obscureText: obscured,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                        RegExp('[ ]'),
+                      ),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(

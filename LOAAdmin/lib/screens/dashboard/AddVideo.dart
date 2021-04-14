@@ -44,9 +44,6 @@ class _AddVideoState extends State<AddVideo> {
             ),
             onPressed: () {
               Navigator.pop(context);
-              (_video != null)
-                  ? (_videoPlayerController.value.isPlaying)
-                  : _videoPlayerController.pause();
             },
           ),
         ],
