@@ -83,7 +83,7 @@ class _AddFaqState extends State<AddFaq> {
                 ),
                 onPressed: () {
                   try {
-                    var id = uuid.v1();
+                    var id = uuid.v1(); // Generates a unique id for the FAQ
                     // Save the user details into the database
                     FirebaseFirestore.instance.collection('FAQs').add({
                       'id': id,
