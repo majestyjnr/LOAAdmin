@@ -46,11 +46,11 @@ class _AddFaqState extends State<AddFaq> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             children: <Widget>[
               TextField(
-                minLines: 1,
+                minLines: 2,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 controller: _faqQuestion,
@@ -59,7 +59,7 @@ class _AddFaqState extends State<AddFaq> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 25,
               ),
               TextField(
                 minLines: 6,
@@ -71,41 +71,49 @@ class _AddFaqState extends State<AddFaq> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 40,
               ),
               MaterialButton(
                 minWidth: double.infinity,
+                height: 45,
                 child: Text(
                   'Add FAQ',
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () {
+                  
                   try {
                     // Save the user details into the database
                     FirebaseFirestore.instance.collection('FAQs').add({
                       'faqQuestion': _faqQuestion.text,
                       'faqAnswer': _faqAnswer.text,
                     }).then((value) {
+                      _faqQuestion.text = '';
+                      _faqAnswer.text = '';
                       Toast.show(
                         'FAQ added successfully.',
                         context,
                         duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
+                        gravity: Toast.BOTTOM,
                       );
                     }).catchError((value) {
+                      _faqQuestion.text = '';
+                      _faqAnswer.text = '';
                       Toast.show(
                         'Error adding FAQ.',
                         context,
                         duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
+                        gravity: Toast.BOTTOM,
                       );
                     });
                   } catch (e) {
+                    _faqQuestion.text = '';
+                    _faqAnswer.text = '';
                     Toast.show(
                       'Error saving FAQ. Please try again',
                       context,
                       duration: Toast.LENGTH_LONG,
-                      gravity: Toast.TOP,
+                      gravity: Toast.BOTTOM,
                     );
                   }
                 },
