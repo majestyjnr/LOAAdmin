@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:toast/toast.dart';
 
 class AddFaq extends StatefulWidget {
@@ -12,6 +13,8 @@ class AddFaq extends StatefulWidget {
 class _AddFaqState extends State<AddFaq> {
   TextEditingController _faqQuestion = new TextEditingController();
   TextEditingController _faqAnswer = new TextEditingController();
+  bool isLoading = false;
+  bool isButtonNotDeactivated = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,47 +79,68 @@ class _AddFaqState extends State<AddFaq> {
               MaterialButton(
                 minWidth: double.infinity,
                 height: 45,
-                child: Text(
-                  'Add FAQ',
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  
-                  try {
-                    // Save the user details into the database
-                    FirebaseFirestore.instance.collection('FAQs').add({
-                      'faqQuestion': _faqQuestion.text,
-                      'faqAnswer': _faqAnswer.text,
-                    }).then((value) {
-                      _faqQuestion.text = '';
-                      _faqAnswer.text = '';
-                      Toast.show(
-                        'FAQ added successfully.',
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.BOTTOM,
-                      );
-                    }).catchError((value) {
-                      _faqQuestion.text = '';
-                      _faqAnswer.text = '';
-                      Toast.show(
-                        'Error adding FAQ.',
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.BOTTOM,
-                      );
-                    });
-                  } catch (e) {
-                    _faqQuestion.text = '';
-                    _faqAnswer.text = '';
-                    Toast.show(
-                      'Error saving FAQ. Please try again',
-                      context,
-                      duration: Toast.LENGTH_LONG,
-                      gravity: Toast.BOTTOM,
-                    );
-                  }
-                },
+                child: isLoading
+                    ? NutsActivityIndicator(
+                        activeColor: Colors.white,
+                      )
+                    : Text(
+                        'Add FAQ',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                onPressed: isButtonNotDeactivated
+                    ? () {
+                        setState(() {
+                          isLoading = true;
+                          isButtonNotDeactivated = false;
+                        });
+                        try {
+                          // Save the user details into the database
+                          FirebaseFirestore.instance.collection('FAQs').add({
+                            'faqQuestion': _faqQuestion.text,
+                            'faqAnswer': _faqAnswer.text,
+                          }).then((value) {
+                            setState(() {
+                              isLoading = false;
+                              isButtonNotDeactivated = false;
+                            });
+                            _faqQuestion.text = '';
+                            _faqAnswer.text = '';
+                            Toast.show(
+                              'FAQ added successfully.',
+                              context,
+                              duration: Toast.LENGTH_LONG,
+                              gravity: Toast.TOP,
+                            );
+                          }).catchError((value) {
+                            setState(() {
+                              isLoading = false;
+                              isButtonNotDeactivated = false;
+                            });
+                            _faqQuestion.text = '';
+                            _faqAnswer.text = '';
+                            Toast.show(
+                              'Error adding FAQ.',
+                              context,
+                              duration: Toast.LENGTH_LONG,
+                              gravity: Toast.TOP,
+                            );
+                          });
+                        } catch (e) {
+                          setState(() {
+                            isLoading = false;
+                            isButtonNotDeactivated = false;
+                          });
+                          _faqQuestion.text = '';
+                          _faqAnswer.text = '';
+                          Toast.show(
+                            'Error saving FAQ. Please try again',
+                            context,
+                            duration: Toast.LENGTH_LONG,
+                            gravity: Toast.TOP,
+                          );
+                        }
+                      }
+                    : null,
                 elevation: 0.5,
                 color: Colors.blue,
               ),
