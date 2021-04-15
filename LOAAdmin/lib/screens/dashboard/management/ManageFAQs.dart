@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 
 class ManageFAQs extends StatefulWidget {
   ManageFAQs({Key key}) : super(key: key);
@@ -9,6 +13,7 @@ class ManageFAQs extends StatefulWidget {
 }
 
 class _ManageFAQsState extends State<ManageFAQs> {
+  CollectionReference faqs = FirebaseFirestore.instance.collection('FAQs');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +45,90 @@ class _ManageFAQsState extends State<ManageFAQs> {
             },
           ),
         ],
+      ),
+      body: StreamBuilder(
+        stream: faqs.snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'An error ocuurred while fetching data',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: NutsActivityIndicator(
+                    activeColor: Colors.blue,
+                  ),
+                ),
+                SizedBox(
+                  height: 8,
+                ),
+                Center(
+                  child: Text(
+                    'Loading...',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                return Slidable(
+                  actionPane: SlidableDrawerActionPane(),
+                  actionExtentRatio: 0.25,
+                  actions: [
+                    IconSlideAction(
+                      caption: 'Edit',
+                      color: Colors.blue,
+                      icon: Icons.edit,
+                      onTap: () {},
+                    ),
+                  ],
+                  secondaryActions: [
+                    IconSlideAction(
+                      caption: 'Delete',
+                      color: Colors.red,
+                      icon: Icons.delete,
+                      onTap: () {},
+                    ),
+                  ],
+                  child: ListTile(
+                    onTap: () {},
+                    title: Text(
+                      snapshot.data.docs[index]['faqQuestion'],
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                    ),
+                    subtitle: Text(
+                      snapshot.data.docs[index]['faqAnswer'],
+                      maxLines: 1,
+                    ),
+                  ),
+                );
+              });
+        },
       ),
     );
   }
