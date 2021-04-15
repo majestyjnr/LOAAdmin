@@ -89,45 +89,52 @@ class _ManageFAQsState extends State<ManageFAQs> {
             );
           }
 
-          return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                return Slidable(
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.25,
-                  actions: [
-                    IconSlideAction(
-                      caption: 'Edit',
-                      color: Colors.blue,
-                      icon: Icons.edit,
-                      onTap: () {},
-                    ),
-                  ],
-                  secondaryActions: [
-                    IconSlideAction(
-                      caption: 'Delete',
-                      color: Colors.red,
-                      icon: Icons.delete,
-                      onTap: () {},
-                    ),
-                  ],
-                  child: ListTile(
+          return ListView.separated(
+            itemCount: snapshot.data.docs.length,
+            itemBuilder: (context, index) {
+              return Slidable(
+                actionPane: SlidableDrawerActionPane(),
+                actionExtentRatio: 0.25,
+                actions: [
+                  IconSlideAction(
+                    caption: 'Edit',
+                    color: Colors.blue,
+                    icon: Icons.edit,
                     onTap: () {},
-                    title: Text(
-                      snapshot.data.docs[index]['faqQuestion'],
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                    ),
-                    subtitle: Text(
-                      snapshot.data.docs[index]['faqAnswer'],
-                      maxLines: 1,
-                    ),
                   ),
-                );
-              });
+                ],
+                secondaryActions: [
+                  IconSlideAction(
+                    caption: 'Delete',
+                    color: Colors.red,
+                    icon: Icons.delete,
+                    onTap: () {},
+                  ),
+                ],
+                child: ListTile(
+                  onTap: () {},
+                  title: Text(
+                    snapshot.data.docs[index]['faqQuestion'],
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                  ),
+                  subtitle: Text(
+                    snapshot.data.docs[index]['faqAnswer'],
+                    maxLines: 1,
+                  ),
+                ),
+              );
+            },
+            separatorBuilder: (context, builder) {
+              return Divider(
+                height: 0,
+                color: Colors.blue,
+              );
+            },
+          );
         },
       ),
     );
