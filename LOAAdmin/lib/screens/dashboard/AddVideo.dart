@@ -22,7 +22,7 @@ class _AddVideoState extends State<AddVideo> {
   String dropdownValue = 'Acquisition Section';
   File _video;
   bool isLoading = false;
-  dynamic _progress;
+  double _progress;
   dynamic id = Uuid().v1();
 
   VideoPlayerController _videoPlayerController;
@@ -64,11 +64,11 @@ class _AddVideoState extends State<AddVideo> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              (_progress == null)
+              (_progress != null)
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Uploading ${(_progress * 100).toStringAsFixed(2)}%...',
+                        'Uploading ${(_progress * 100).toString()}%...',
                         style: TextStyle(
                           color: Colors.blue,
                         ),
@@ -239,6 +239,7 @@ class _AddVideoState extends State<AddVideo> {
                       setState(() {
                         isLoading = false;
                         _video = null;
+                        _progress = null;
                       });
                       Toast.show(
                         'Video successfully updated into the database.',
@@ -253,6 +254,7 @@ class _AddVideoState extends State<AddVideo> {
 
                     setState(() {
                       isLoading = false;
+                      _progress = null;
                     });
                     Toast.show(
                       'Error uploading video to database.',
