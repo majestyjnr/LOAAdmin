@@ -131,7 +131,6 @@ class _ManageFAQsState extends State<ManageFAQs> {
             separatorBuilder: (context, builder) {
               return Divider(
                 height: 0,
-                color: Colors.blue,
               );
             },
           );
