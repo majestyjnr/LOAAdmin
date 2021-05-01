@@ -60,9 +60,10 @@ class _AddFaqState extends State<AddFaq> {
                 maxLines: null,
                 controller: _faqQuestion,
                 decoration: InputDecoration(
-                  labelText: 'FAQ Question',
-                  errorText: _isquestionValidate ? 'Question field must be filled out' : null
-                ),
+                    labelText: 'FAQ Question',
+                    errorText: _isquestionValidate
+                        ? 'Question field must be filled out'
+                        : null),
               ),
               SizedBox(
                 height: 25,
@@ -73,9 +74,10 @@ class _AddFaqState extends State<AddFaq> {
                 maxLines: null,
                 controller: _faqAnswer,
                 decoration: InputDecoration(
-                  labelText: 'FAQ Answer',
-                  errorText: _isquestionValidate ? 'Answer field must be filled out' : null
-                ),
+                    labelText: 'FAQ Answer',
+                    errorText: _isquestionValidate
+                        ? 'Answer field must be filled out'
+                        : null),
               ),
               SizedBox(
                 height: 40,
@@ -92,11 +94,17 @@ class _AddFaqState extends State<AddFaq> {
                         style: TextStyle(color: Colors.white),
                       ),
                 onPressed: () {
-                  if(_faqQuestion.text.isEmpty){
+                  if (_faqQuestion.text.isEmpty) {
                     setState(() {
                       _isquestionValidate = true;
                     });
-                  } else if ()
+                  } else if (_faqAnswer.text.isEmpty) {
+                    setState(() {
+                      _isanswerValidate = true;
+                    });
+                  } else {
+
+                  }
                   setState(() {
                     isLoading = true;
                   });
@@ -159,4 +167,6 @@ class _AddFaqState extends State<AddFaq> {
       ),
     );
   }
+}
+
 }
