@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:sweetalert/sweetalert.dart';
 import 'package:toast/toast.dart';
 
 class AddFaq extends StatefulWidget {
@@ -103,59 +104,58 @@ class _AddFaqState extends State<AddFaq> {
                       _isanswerValidate = true;
                     });
                   } else {
-
-                  }
-                  setState(() {
-                    isLoading = true;
-                  });
-                  Toast.show(
-                    'Uploading FAQ',
-                    context,
-                    duration: Toast.LENGTH_LONG,
-                    gravity: Toast.TOP,
-                  );
-                  try {
-                    // Save the user details into the database
-                    FirebaseFirestore.instance.collection('FAQs').add({
-                      'faqQuestion': _faqQuestion.text,
-                      'faqAnswer': _faqAnswer.text,
-                    }).then((value) {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      _faqQuestion.text = '';
-                      _faqAnswer.text = '';
-                      Toast.show(
-                        'FAQ added successfully.',
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
-                      );
-                    }).catchError((value) {
-                      setState(() {
-                        isLoading = false;
-                      });
-                      _faqQuestion.text = '';
-                      _faqAnswer.text = '';
-                      Toast.show(
-                        'Error adding FAQ.',
-                        context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
-                      );
-                    });
-                  } catch (e) {
                     setState(() {
-                      isLoading = false;
+                      isLoading = true;
                     });
-                    _faqQuestion.text = '';
-                    _faqAnswer.text = '';
                     Toast.show(
-                      'Error saving FAQ. Please try again',
+                      'Uploading FAQ',
                       context,
                       duration: Toast.LENGTH_LONG,
                       gravity: Toast.TOP,
                     );
+                    try {
+                      // Save the user details into the database
+                      FirebaseFirestore.instance.collection('FAQs').add({
+                        'faqQuestion': _faqQuestion.text,
+                        'faqAnswer': _faqAnswer.text,
+                      }).then((value) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        _faqQuestion.text = '';
+                        _faqAnswer.text = '';
+                        SweetAlert.show(
+                          context,
+                          title: 'Error!',
+                          subtitle: 'FAQ added successfully',
+                          style: SweetAlertStyle.success,
+                        );
+                      }).catchError((value) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        _faqQuestion.text = '';
+                        _faqAnswer.text = '';
+                        SweetAlert.show(
+                          context,
+                          title: 'Error!',
+                          subtitle: 'Error adding FAQ!',
+                          style: SweetAlertStyle.error,
+                        );
+                      });
+                    } on FirebaseException catch (e) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      _faqQuestion.text = '';
+                      _faqAnswer.text = '';
+                      Toast.show(
+                        'Error saving FAQ. Please try again',
+                        context,
+                        duration: Toast.LENGTH_LONG,
+                        gravity: Toast.TOP,
+                      );
+                    }
                   }
                 },
                 elevation: 0.5,
@@ -167,6 +167,4 @@ class _AddFaqState extends State<AddFaq> {
       ),
     );
   }
-}
-
 }
