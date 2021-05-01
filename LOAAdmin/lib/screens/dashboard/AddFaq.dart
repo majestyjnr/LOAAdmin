@@ -14,6 +14,9 @@ class _AddFaqState extends State<AddFaq> {
   TextEditingController _faqQuestion = new TextEditingController();
   TextEditingController _faqAnswer = new TextEditingController();
   bool isLoading = false;
+  bool _isquestionValidate = false;
+  bool _isanswerValidate = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +61,7 @@ class _AddFaqState extends State<AddFaq> {
                 controller: _faqQuestion,
                 decoration: InputDecoration(
                   labelText: 'FAQ Question',
+                  errorText: _isquestionValidate ? 'Question field must be filled out' : null
                 ),
               ),
               SizedBox(
@@ -70,6 +74,7 @@ class _AddFaqState extends State<AddFaq> {
                 controller: _faqAnswer,
                 decoration: InputDecoration(
                   labelText: 'FAQ Answer',
+                  errorText: _isquestionValidate ? 'Answer field must be filled out' : null
                 ),
               ),
               SizedBox(
@@ -87,9 +92,20 @@ class _AddFaqState extends State<AddFaq> {
                         style: TextStyle(color: Colors.white),
                       ),
                 onPressed: () {
+                  if(_faqQuestion.text.isEmpty){
+                    setState(() {
+                      _isquestionValidate = true;
+                    });
+                  } else if ()
                   setState(() {
                     isLoading = true;
                   });
+                  Toast.show(
+                    'Uploading FAQ',
+                    context,
+                    duration: Toast.LENGTH_LONG,
+                    gravity: Toast.TOP,
+                  );
                   try {
                     // Save the user details into the database
                     FirebaseFirestore.instance.collection('FAQs').add({
