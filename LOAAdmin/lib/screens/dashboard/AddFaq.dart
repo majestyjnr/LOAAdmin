@@ -143,7 +143,7 @@ class _AddFaqState extends State<AddFaq> {
                           style: SweetAlertStyle.error,
                         );
                       });
-                    } on FirebaseException catch (e) {
+                    } catch (e) {
                       setState(() {
                         isLoading = false;
                       });
