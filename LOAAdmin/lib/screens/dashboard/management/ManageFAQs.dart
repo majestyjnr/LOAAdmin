@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class ManageFAQs extends StatefulWidget {
   ManageFAQs({Key key}) : super(key: key);
@@ -110,11 +111,18 @@ class _ManageFAQsState extends State<ManageFAQs> {
                     icon: Icons.delete,
                     onTap: () {
                       DocumentSnapshot data = snapshot.data.docs[index];
-
                       FirebaseFirestore.instance
                           .collection('FAQs')
                           .doc(data.id)
-                          .delete();
+                          .delete()
+                          .then((value) {
+                        SweetAlert.show(
+                          context,
+                          title: 'Success!',
+                          subtitle: 'FAQ deleted successfully!',
+                          style: SweetAlertStyle.success,
+                        );
+                      });
                     },
                   ),
                 ],
