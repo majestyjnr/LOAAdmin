@@ -108,7 +108,14 @@ class _ManageFAQsState extends State<ManageFAQs> {
                     caption: 'Delete',
                     color: Colors.red,
                     icon: Icons.delete,
-                    onTap: () {},
+                    onTap: () {
+                      DocumentSnapshot data = snapshot.data.docs[index];
+
+                      FirebaseFirestore.instance
+                          .collection('FAQs')
+                          .doc(data.id)
+                          .delete();
+                    },
                   ),
                 ],
                 child: ListTile(
