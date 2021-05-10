@@ -122,7 +122,7 @@ class _ManageFAQsState extends State<ManageFAQs> {
                           subtitle: 'FAQ deleted successfully!',
                           style: SweetAlertStyle.success,
                         );
-                      }).catchError(() {
+                      }).catchError((error) {
                         SweetAlert.show(
                           context,
                           title: 'Error!',
