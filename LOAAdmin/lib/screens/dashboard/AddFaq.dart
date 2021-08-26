@@ -126,7 +126,7 @@ class _AddFaqState extends State<AddFaq> {
                         _faqAnswer.text = '';
                         SweetAlert.show(
                           context,
-                          title: 'Error!',
+                          title: 'Success!',
                           subtitle: 'FAQ added successfully',
                           style: SweetAlertStyle.success,
                         );
