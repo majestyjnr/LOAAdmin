@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:sweetalert/sweetalert.dart';
 import 'package:toast/toast.dart';
 
 class Signin extends StatefulWidget {
@@ -208,19 +209,47 @@ class _SigninState extends State<Signin> {
                           //   );
                           // });
                         }
-                      } catch (e) {
-                        print(e);
-                        Toast.show(
-                          '$e',
-                          context,
-                          duration: Toast.LENGTH_LONG,
-                          gravity: Toast.TOP,
-                        );
+                      }on FirebaseAuthException catch(e) {
+                        
                         setState(() {
                           isLoading = false;
                         });
                         _email.text = '';
                         _password.text = '';
+                        switch (e.code) {
+                          case 'unknown':
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'No or Slow internet connection',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                          case 'wrong-password':
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'Wrong password provided',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                          case 'invalid-email':
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'Invalid email provided',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                          default:
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'A login error occured',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                        }
                       }
                     },
                     child: isLoading
