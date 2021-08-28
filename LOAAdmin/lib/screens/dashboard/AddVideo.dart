@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:sweetalert/sweetalert.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
@@ -241,11 +242,11 @@ class _AddVideoState extends State<AddVideo> {
                         _video = null;
                         _progress = null;
                       });
-                      Toast.show(
-                        'Video successfully updated into the database.',
+                      SweetAlert.show(
                         context,
-                        duration: Toast.LENGTH_LONG,
-                        gravity: Toast.TOP,
+                        title: 'Success!',
+                        subtitle: 'Video uploaded successfully',
+                        style: SweetAlertStyle.success,
                       );
                     });
                   } catch (e) {
@@ -256,12 +257,13 @@ class _AddVideoState extends State<AddVideo> {
                       isLoading = false;
                       _progress = null;
                     });
-                    Toast.show(
-                      'Error uploading video to database.',
-                      context,
-                      duration: Toast.LENGTH_LONG,
-                      gravity: Toast.TOP,
-                    );
+                    
+                    SweetAlert.show(
+                        context,
+                        title: 'Error!',
+                        subtitle: 'Error uploading video',
+                        style: SweetAlertStyle.error,
+                      );
                   }
                 },
                 elevation: 0.5,
