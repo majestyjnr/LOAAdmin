@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens.dart';
 import 'package:LOAAdmin/screens/auth/Signin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -130,14 +131,14 @@ class _ProfileState extends State<Profile> {
                     children: <Widget>[
                       ListTile(
                         onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return ChangePassword();
-                          //     },
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ChangePassword();
+                              },
+                            ),
+                          );
                         },
                         leading: Icon(CupertinoIcons.padlock),
                         title: Text('Change Password'),
