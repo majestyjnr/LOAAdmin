@@ -229,7 +229,7 @@ class _AddVideoState extends State<AddVideo> {
                     // Convert downloadURL to a string
                     final String url = downloadURL.toString();
 
-                    // Save the user details into the database
+                    // Save the video details into the database
                     FirebaseFirestore.instance.collection('Videos Info').add({
                       'id': id,
                       'videoSection': dropdownValue,

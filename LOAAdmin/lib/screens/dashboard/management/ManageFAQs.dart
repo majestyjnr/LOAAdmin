@@ -96,14 +96,14 @@ class _ManageFAQsState extends State<ManageFAQs> {
               return Slidable(
                 actionPane: SlidableDrawerActionPane(),
                 actionExtentRatio: 0.25,
-                actions: [
-                  IconSlideAction(
-                    caption: 'Edit',
-                    color: Colors.blue,
-                    icon: Icons.edit,
-                    onTap: () {},
-                  ),
-                ],
+                // actions: [
+                //   IconSlideAction(
+                //     caption: 'Edit',
+                //     color: Colors.blue,
+                //     icon: Icons.edit,
+                //     onTap: () {},
+                //   ),
+                // ],
                 secondaryActions: [
                   IconSlideAction(
                     caption: 'Delete',
