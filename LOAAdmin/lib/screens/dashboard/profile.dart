@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key key}) : super(key: key);
@@ -13,6 +14,9 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String _adminName = '';
+  String _adminEmail = '';
+
   _showDialog(BuildContext context) {
     CupertinoAlertDialog alert = CupertinoAlertDialog(
       title: Text('Message'),
@@ -28,11 +32,11 @@ class _ProfileState extends State<Profile> {
           isDestructiveAction: true,
           child: Text('Yes'),
           onPressed: () async {
-            // SharedPreferences prefs = await SharedPreferences.getInstance();
-            // prefs.getString('studentLevel');
-            // prefs.getString('studentName');
-            // prefs.getString('studentEmail');
-            // prefs.getString('studentPassword');
+            await FirebaseAuth.instance.signOut();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+
+            prefs.remove('adminName');
+            prefs.remove('adminEmail');
             await FirebaseAuth.instance.signOut().then((value) {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -52,6 +56,20 @@ class _ProfileState extends State<Profile> {
         return alert;
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserDetails();
+  }
+
+  _getUserDetails() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _adminName = prefs.getString("adminName");
+      _adminEmail = prefs.getString("adminEmail");
+    });
   }
 
   @override
@@ -111,10 +129,14 @@ class _ProfileState extends State<Profile> {
                       // Open Edit Profile
                     },
                     title: Center(
-                      child: Text('Solomon Aidoo Junior'),
+                      child: (_adminName != null)
+                          ? Text(_adminName)
+                          : Text('Loading...'),
                     ),
                     subtitle: Center(
-                      child: Text('aidoojuniorsolomon@gmail.com'),
+                      child: (_adminEmail != null)
+                          ? Text(_adminEmail)
+                          : Text('Loading...'),
                     ),
                   ),
                 ),
