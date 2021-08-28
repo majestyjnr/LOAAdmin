@@ -2,6 +2,7 @@ import 'package:LOAAdmin/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -146,7 +147,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             return SweetAlert.show(
                               context,
                               title: 'Error!',
-                              subtitle: 'An error occured',
+                              subtitle: "This email isn't registered",
                               style: SweetAlertStyle.error,
                             );
                             break;
@@ -155,7 +156,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     }
                   },
                   child: isLoading
-                      ? CupertinoActivityIndicator()
+                      ? NutsActivityIndicator(
+                          activeColor: Colors.white,
+                        )
                       : Text(
                           'Submit',
                           style: TextStyle(
