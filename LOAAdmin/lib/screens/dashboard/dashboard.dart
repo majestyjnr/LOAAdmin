@@ -30,6 +30,7 @@ class _DashboardState extends State<Dashboard> {
             color: Colors.blue,
           ),
         ),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -119,8 +120,8 @@ class _DashboardState extends State<Dashboard> {
                   child: Material(
                     child: InkWell(
                       child: Container(
-                        width: 160,
-                        height: 150,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        height: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.all(
@@ -167,8 +168,8 @@ class _DashboardState extends State<Dashboard> {
                   child: Material(
                     child: InkWell(
                       child: Container(
-                        width: 160,
-                        height: 150,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        height: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           color: Colors.redAccent,
                           borderRadius: BorderRadius.all(
@@ -221,8 +222,8 @@ class _DashboardState extends State<Dashboard> {
                   child: Material(
                     child: InkWell(
                       child: Container(
-                        width: 160,
-                        height: 150,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        height: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           color: Colors.purpleAccent,
                           borderRadius: BorderRadius.all(
@@ -269,8 +270,8 @@ class _DashboardState extends State<Dashboard> {
                   child: Material(
                     child: InkWell(
                       child: Container(
-                        width: 160,
-                        height: 150,
+                        width: MediaQuery.of(context).size.width * 0.43,
+                        height: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
                           color: Colors.greenAccent,
                           borderRadius: BorderRadius.all(
