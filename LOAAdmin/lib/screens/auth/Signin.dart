@@ -19,6 +19,8 @@ class Signin extends StatefulWidget {
 class _SigninState extends State<Signin> {
   bool obscured = true;
   bool isLoading = false;
+  bool _emailValidate = false;
+  bool _passwordValidate = false;
   dynamic data;
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
@@ -78,6 +80,13 @@ class _SigninState extends State<Signin> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _email,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _emailValidate = false;
+                        });
+                      }
+                    },
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
                         RegExp('[ ]'),
@@ -95,6 +104,8 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       labelText: 'Email',
+                      errorText:
+                          _emailValidate ? 'Email field cannot be empty' : null,
                       border: InputBorder.none,
                       prefixIcon: Icon(Icons.person),
                     ),
@@ -109,6 +120,13 @@ class _SigninState extends State<Signin> {
                     keyboardType: TextInputType.text,
                     obscureText: obscured,
                     controller: _password,
+                     onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _passwordValidate = false;
+                        });
+                      }
+                    },
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
                         RegExp('[ ]'),
@@ -126,6 +144,9 @@ class _SigninState extends State<Signin> {
                         ),
                       ),
                       labelText: 'Password',
+                      errorText: _passwordValidate
+                          ? 'Password field cannot be empty'
+                          : null,
                       prefixIcon: Icon(Icons.security),
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -153,115 +174,125 @@ class _SigninState extends State<Signin> {
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      setState(() {
-                        isLoading = true;
-                      });
-
-                      try {
-                        UserCredential user = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                          email: _email.text,
-                          password: _password.text,
-                        );
-
-                        if (user != null) {
-                          // Get the admins collection from firestore
-                          CollectionReference admins =
-                              FirebaseFirestore.instance.collection('admins');
-
-                          admins
-                              .doc(user.user.uid)
-                              .get()
-                              .then<dynamic>((snapshot) async {
-                            if (snapshot.data() != null) {
-                              setState(() {
-                                data = snapshot.data();
-                              });
-                              if (data['role'] == 'Admin') {
-                                // Store data in shared preferences
-                                await prefs.setString(
-                                  'adminName',
-                                  data['firstName'] +
-                                      ' ' +
-                                      data['lastName'],
-                                );
-                                await prefs.setString(
-                                  'adminEmail',
-                                  data['email'],
-                                );
-                                // Navigate to Dashboard
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                  builder: (context) {
-                                    return Dashboard();
-                                  },
-                                ), (Route<dynamic> route) => false);
-                              } else if(data['role'] == 'User') {
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                SweetAlert.show(
-                                  context,
-                                  title: 'Error!',
-                                  subtitle: 'Access denied',
-                                  style: SweetAlertStyle.error,
-                                );
-                              }
-                            }
-                          });
-                          // .catchError(() {
-                          //   setState(() {
-                          //     isLoading = false;
-                          //   });
-                          //   Toast.show(
-                          //     'Access denied.',
-                          //     context,
-                          //     duration: Toast.LENGTH_LONG,
-                          //     gravity: Toast.TOP,
-                          //   );
-                          // });
-                        }
-                      } on FirebaseAuthException catch (e) {
+                      if (_email.text.isEmpty) {
                         setState(() {
-                          isLoading = false;
+                          _emailValidate = true;
                         });
-                        _email.text = '';
-                        _password.text = '';
-                        switch (e.code) {
-                          case 'unknown':
-                            return SweetAlert.show(
-                              context,
-                              title: 'Error!',
-                              subtitle: 'No or Slow internet connection',
-                              style: SweetAlertStyle.error,
-                            );
-                            break;
-                          case 'wrong-password':
-                            return SweetAlert.show(
-                              context,
-                              title: 'Error!',
-                              subtitle: 'Wrong password provided',
-                              style: SweetAlertStyle.error,
-                            );
-                            break;
-                          case 'invalid-email':
-                            return SweetAlert.show(
-                              context,
-                              title: 'Error!',
-                              subtitle: 'Invalid email provided',
-                              style: SweetAlertStyle.error,
-                            );
-                            break;
-                          default:
-                            return SweetAlert.show(
-                              context,
-                              title: 'Error!',
-                              subtitle: 'A login error occured',
-                              style: SweetAlertStyle.error,
-                            );
-                            break;
+                      } else if (_password.text.isEmpty) {
+                        setState(() {
+                          _passwordValidate = true;
+                        });
+                      } else {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        setState(() {
+                          isLoading = true;
+                          _emailValidate = false;
+                          _passwordValidate = false;
+                        });
+
+                        try {
+                          UserCredential user = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                            email: _email.text,
+                            password: _password.text,
+                          );
+
+                          if (user != null) {
+                            // Get the admins collection from firestore
+                            CollectionReference admins =
+                                FirebaseFirestore.instance.collection('admins');
+
+                            admins
+                                .doc(user.user.uid)
+                                .get()
+                                .then<dynamic>((snapshot) async {
+                              if (snapshot.data() != null) {
+                                setState(() {
+                                  data = snapshot.data();
+                                });
+                                if (data['role'] == 'Admin') {
+                                  // Store data in shared preferences
+                                  await prefs.setString(
+                                    'adminName',
+                                    data['firstName'] + ' ' + data['lastName'],
+                                  );
+                                  await prefs.setString(
+                                    'adminEmail',
+                                    data['email'],
+                                  );
+                                  // Navigate to Dashboard
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                    builder: (context) {
+                                      return Dashboard();
+                                    },
+                                  ), (Route<dynamic> route) => false);
+                                } else if (data['role'] == 'User') {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  SweetAlert.show(
+                                    context,
+                                    title: 'Error!',
+                                    subtitle: 'Access denied',
+                                    style: SweetAlertStyle.error,
+                                  );
+                                }
+                              }
+                            });
+                            // .catchError(() {
+                            //   setState(() {
+                            //     isLoading = false;
+                            //   });
+                            //   Toast.show(
+                            //     'Access denied.',
+                            //     context,
+                            //     duration: Toast.LENGTH_LONG,
+                            //     gravity: Toast.TOP,
+                            //   );
+                            // });
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          _email.text = '';
+                          _password.text = '';
+                          switch (e.code) {
+                            case 'unknown':
+                              return SweetAlert.show(
+                                context,
+                                title: 'Error!',
+                                subtitle: 'No or Slow internet connection',
+                                style: SweetAlertStyle.error,
+                              );
+                              break;
+                            case 'wrong-password':
+                              return SweetAlert.show(
+                                context,
+                                title: 'Error!',
+                                subtitle: 'Wrong password provided',
+                                style: SweetAlertStyle.error,
+                              );
+                              break;
+                            case 'invalid-email':
+                              return SweetAlert.show(
+                                context,
+                                title: 'Error!',
+                                subtitle: 'Invalid email provided',
+                                style: SweetAlertStyle.error,
+                              );
+                              break;
+                            default:
+                              return SweetAlert.show(
+                                context,
+                                title: 'Error!',
+                                subtitle: 'A login error occured',
+                                style: SweetAlertStyle.error,
+                              );
+                              break;
+                          }
                         }
                       }
                     },

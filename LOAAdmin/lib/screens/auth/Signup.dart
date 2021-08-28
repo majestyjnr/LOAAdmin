@@ -19,6 +19,11 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   bool obscured = true;
   bool isLoading = false;
+  bool _firstValidate = false;
+  bool _lastValidate = false;
+  bool _emailValidate = false;
+  bool _positionValidate = false;
+  bool _passwordValidate = false;
   TextEditingController _firstname = new TextEditingController();
   TextEditingController _lastname = new TextEditingController();
   TextEditingController _email = new TextEditingController();
@@ -80,6 +85,13 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _firstname,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _firstValidate = false;
+                        });
+                      }
+                    },
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
                         RegExp('[ ]'),
@@ -97,6 +109,9 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       labelText: 'Firstname',
+                      errorText: _firstValidate
+                          ? 'Firstname field cannot be empty'
+                          : null,
                       prefixIcon: Icon(Icons.person),
                     ),
                   ),
@@ -106,6 +121,13 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _lastname,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _lastValidate = false;
+                        });
+                      }
+                    },
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
                         RegExp('[ ]'),
@@ -123,6 +145,9 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       labelText: 'Lastname',
+                      errorText: _lastValidate
+                          ? 'Lastname field cannot be empty'
+                          : null,
                       prefixIcon: Icon(Icons.person),
                     ),
                   ),
@@ -132,6 +157,13 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.emailAddress,
                     controller: _email,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _emailValidate = false;
+                        });
+                      }
+                    },
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
                         RegExp('[ ]'),
@@ -149,6 +181,8 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       labelText: 'Email',
+                      errorText:
+                          _emailValidate ? 'Email field cannot be empty' : null,
                       prefixIcon: Icon(Icons.mail),
                     ),
                   ),
@@ -158,6 +192,13 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _position,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _positionValidate = false;
+                        });
+                      }
+                    },
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
                         RegExp('[ ]'),
@@ -175,6 +216,9 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       labelText: 'Position',
+                      errorText: _positionValidate
+                          ? 'Position field cannot be empty'
+                          : null,
                       prefixIcon: Icon(Icons.work_rounded),
                     ),
                   ),
@@ -184,6 +228,13 @@ class _SignupState extends State<Signup> {
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: _password,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        setState(() {
+                          _passwordValidate = false;
+                        });
+                      }
+                    },
                     obscureText: obscured,
                     inputFormatters: [
                       FilteringTextInputFormatter.deny(
@@ -202,6 +253,9 @@ class _SignupState extends State<Signup> {
                         ),
                       ),
                       labelText: 'Password',
+                      errorText: _passwordValidate
+                          ? 'Password field cannot be empty'
+                          : null,
                       prefixIcon: Icon(Icons.security),
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -229,68 +283,91 @@ class _SignupState extends State<Signup> {
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () async {
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      setState(() {
-                        isLoading = true;
-                      });
-                      try {
-                        UserCredential user = await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                          email: _email.text,
-                          password: _password.text,
-                        );
-
-                        if (user != null) {
-                          // Get The Current Admin
-                          User adminCurrent = FirebaseAuth.instance.currentUser;
-
-                          // Save the user details into the database
-                          FirebaseFirestore.instance
-                              .collection('admins')
-                              .doc(adminCurrent.uid)
-                              .set({
-                            'firstName': _firstname.text,
-                            'lastName': _lastname.text,
-                            'email': _email.text,
-                            'position': _position.text,
-                            'role': 'Admin'
-                          });
-                          await prefs.setString(
-                            'adminName',
-                            _firstname.text + ' ' + _lastname.text,
-                          );
-                          await prefs.setString(
-                            'adminEmail',
-                            _email.text,
-                          );
-                          User signInUser = FirebaseAuth.instance.currentUser;
-                          signInUser.sendEmailVerification().then((value) {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                              builder: (context) {
-                                return Dashboard();
-                              },
-                            ), (Route<dynamic> route) => false);
-                          }).catchError((onError) {
-                            print(onError);
-                          });
-                        }
-                      } catch (e) {
-                        SweetAlert.show(
-                          context,
-                          title: 'Error!',
-                          subtitle: 'A signup error occured',
-                          style: SweetAlertStyle.error,
-                        );
+                      if (_firstname.text.isEmpty) {
                         setState(() {
-                          isLoading = false;
+                          _firstValidate = true;
                         });
-                        _firstname.text = '';
-                        _lastname.text = '';
-                        _email.text = '';
-                        _position.text = '';
-                        _password.text = '';
+                      } else if (_lastname.text.isEmpty) {
+                        setState(() {
+                          _lastValidate = true;
+                        });
+                      } else if (_email.text.isEmpty) {
+                        setState(() {
+                          _emailValidate = true;
+                        });
+                      } else if (_position.text.isEmpty) {
+                        setState(() {
+                          _positionValidate = true;
+                        });
+                      } else if (_password.text.isEmpty) {
+                        setState(() {
+                          _passwordValidate = true;
+                        });
+                      } else {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        setState(() {
+                          isLoading = true;
+                        });
+                        try {
+                          UserCredential user = await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: _email.text,
+                            password: _password.text,
+                          );
+
+                          if (user != null) {
+                            // Get The Current Admin
+                            User adminCurrent =
+                                FirebaseAuth.instance.currentUser;
+
+                            // Save the user details into the database
+                            FirebaseFirestore.instance
+                                .collection('admins')
+                                .doc(adminCurrent.uid)
+                                .set({
+                              'firstName': _firstname.text,
+                              'lastName': _lastname.text,
+                              'email': _email.text,
+                              'position': _position.text,
+                              'role': 'Admin'
+                            });
+                            await prefs.setString(
+                              'adminName',
+                              _firstname.text + ' ' + _lastname.text,
+                            );
+                            await prefs.setString(
+                              'adminEmail',
+                              _email.text,
+                            );
+                            User signInUser = FirebaseAuth.instance.currentUser;
+                            signInUser.sendEmailVerification().then((value) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                builder: (context) {
+                                  return Dashboard();
+                                },
+                              ), (Route<dynamic> route) => false);
+                            }).catchError((onError) {
+                              print(onError);
+                            });
+                          }
+                        } catch (e) {
+                          SweetAlert.show(
+                            context,
+                            title: 'Error!',
+                            subtitle: 'A signup error occured',
+                            style: SweetAlertStyle.error,
+                          );
+                          setState(() {
+                            isLoading = false;
+                          });
+                          _firstname.text = '';
+                          _lastname.text = '';
+                          _email.text = '';
+                          _position.text = '';
+                          _password.text = '';
+                        }
                       }
                     },
                     child: isLoading

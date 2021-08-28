@@ -1,4 +1,4 @@
-import 'package:LOAAdmin/screens.dart';
+import 'package:LOAAdmin/screens/auth/Signin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +13,7 @@ class _RecoveryEmailSentState extends State<RecoveryEmailSent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.5,
         leading: IconButton(
@@ -21,7 +22,11 @@ class _RecoveryEmailSentState extends State<RecoveryEmailSent> {
               color: Colors.blue,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                builder: (context) {
+                  return Signin();
+                },
+              ), (Route<dynamic> route) => false);
             }),
         brightness: Brightness.light,
         backgroundColor: Colors.white,
@@ -31,10 +36,18 @@ class _RecoveryEmailSentState extends State<RecoveryEmailSent> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Icon(
+              CupertinoIcons.check_mark_circled,
+              size: 50,
+              color: Colors.blue,
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               'Email Sent. Kindly check your inbox and reset your password',
               style: TextStyle(
@@ -43,7 +56,7 @@ class _RecoveryEmailSentState extends State<RecoveryEmailSent> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 35,
             ),
             SizedBox(
               width: double.infinity,

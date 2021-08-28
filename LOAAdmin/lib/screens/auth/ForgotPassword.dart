@@ -1,5 +1,8 @@
+import 'package:LOAAdmin/screens.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key key}) : super(key: key);
@@ -10,6 +13,7 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   bool isLoading = false;
+  bool _emailValidate = false;
   TextEditingController _emailController = new TextEditingController();
 
   @override
@@ -52,8 +56,17 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: TextField(
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      setState(() {
+                        _emailValidate = false;
+                      });
+                    }
+                  },
                   decoration: InputDecoration(
                     labelText: 'Email',
+                    errorText:
+                        _emailValidate ? 'Email field cannot be empty' : null,
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Colors.blue,
@@ -77,24 +90,69 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 child: FlatButton(
                   color: Colors.blue,
                   onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    // await FirebaseAuth.instance
-                    //     .sendPasswordResetEmail(email: _emailController.text)
-                    //     .then(
-                    //       (value) => Navigator.of(context).pushAndRemoveUntil(
-                    //           MaterialPageRoute(
-                    //         builder: (context) {
-                    //           return RecoveryEmailSent();
-                    //         },
-                    //       ), (Route<dynamic> route) => false),
-                    //     )
-                    //     .catchError((onError) {
-                    //   setState(() {
-                    //     isLoading = false;
-                    //   });
-                    // });
+                    if (_emailController.text.isEmpty) {
+                      setState(() {
+                        _emailValidate = true;
+                      });
+                    } else {
+                      setState(() {
+                        isLoading = true;
+                        _emailValidate = false;
+                      });
+                      try {
+                        await FirebaseAuth.instance
+                            .sendPasswordResetEmail(
+                              email: _emailController.text,
+                            )
+                            .then(
+                              (value) => Navigator.of(context)
+                                  .pushAndRemoveUntil(MaterialPageRoute(
+                                builder: (context) {
+                                  return RecoveryEmailSent();
+                                },
+                              ), (Route<dynamic> route) => false),
+                            );
+                      } on FirebaseAuthException catch (e) {
+                        setState(() {
+                          isLoading = false;
+                        });
+
+                        switch (e.code) {
+                          case 'unknown':
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'No or Slow internet connection',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                          case 'wrong-password':
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'Invalid password provided',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                          case 'invalid-email':
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'Invalid email provided',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                          default:
+                            return SweetAlert.show(
+                              context,
+                              title: 'Error!',
+                              subtitle: 'An error occured',
+                              style: SweetAlertStyle.error,
+                            );
+                            break;
+                        }
+                      }
+                    }
                   },
                   child: isLoading
                       ? CupertinoActivityIndicator()
