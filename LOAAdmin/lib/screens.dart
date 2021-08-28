@@ -10,3 +10,6 @@ export 'screens/dashboard/dashboard.dart';
 export 'screens/dashboard/profile.dart';
 export 'screens/dashboard/ChangePassword.dart';
 
+export 'screens/dashboard/management/WatchVideo.dart';
+
+

@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -138,7 +139,14 @@ class _ManageVideosState extends State<ManageVideos> {
                     color: Colors.red,
                   ),
                   onTap: () {
-                    
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return WatchVideo(section: '${snapshot.data.docs[index]['videoSection']}');
+                        },
+                      ),
+                    );
                   },
                   title: Text(
                     snapshot.data.docs[index]['videoSection'],
