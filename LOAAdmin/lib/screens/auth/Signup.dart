@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sweetalert/sweetalert.dart';
 import 'package:toast/toast.dart';
 
 class Signup extends StatefulWidget {
@@ -227,6 +229,8 @@ class _SignupState extends State<Signup> {
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       setState(() {
                         isLoading = true;
                       });
@@ -252,7 +256,14 @@ class _SignupState extends State<Signup> {
                             'position': _position.text,
                             'role': 'Admin'
                           });
-
+                          await prefs.setString(
+                            'adminName',
+                            _firstname.text + ' ' + _lastname.text,
+                          );
+                          await prefs.setString(
+                            'adminEmail',
+                            _email.text,
+                          );
                           User signInUser = FirebaseAuth.instance.currentUser;
                           signInUser.sendEmailVerification().then((value) {
                             Navigator.of(context).pushAndRemoveUntil(
@@ -266,12 +277,11 @@ class _SignupState extends State<Signup> {
                           });
                         }
                       } catch (e) {
-                        print(e);
-                        Toast.show(
-                          '$e',
+                        SweetAlert.show(
                           context,
-                          duration: Toast.LENGTH_LONG,
-                          gravity: Toast.BOTTOM,
+                          title: 'Error!',
+                          subtitle: 'A signup error occured',
+                          style: SweetAlertStyle.error,
                         );
                         setState(() {
                           isLoading = false;

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuts_activity_indicator/nuts_activity_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sweetalert/sweetalert.dart';
 import 'package:toast/toast.dart';
 
@@ -152,6 +153,8 @@ class _SigninState extends State<Signin> {
                   child: FlatButton(
                     color: Colors.blue,
                     onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       setState(() {
                         isLoading = true;
                       });
@@ -177,6 +180,17 @@ class _SigninState extends State<Signin> {
                                 data = snapshot.data();
                               });
                               if (data['role'] == 'Admin') {
+                                // Store data in shared preferences
+                                await prefs.setString(
+                                  'adminName',
+                                  data['firstName'] +
+                                      ' ' +
+                                      data['lastName'],
+                                );
+                                await prefs.setString(
+                                  'adminEmail',
+                                  data['email'],
+                                );
                                 // Navigate to Dashboard
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
@@ -184,15 +198,15 @@ class _SigninState extends State<Signin> {
                                     return Dashboard();
                                   },
                                 ), (Route<dynamic> route) => false);
-                              } else {
+                              } else if(data['role'] == 'User') {
                                 setState(() {
                                   isLoading = false;
                                 });
-                                Toast.show(
-                                  'Access denied.',
+                                SweetAlert.show(
                                   context,
-                                  duration: Toast.LENGTH_LONG,
-                                  gravity: Toast.TOP,
+                                  title: 'Error!',
+                                  subtitle: 'Access denied',
+                                  style: SweetAlertStyle.error,
                                 );
                               }
                             }
@@ -209,8 +223,7 @@ class _SigninState extends State<Signin> {
                           //   );
                           // });
                         }
-                      }on FirebaseAuthException catch(e) {
-                        
+                      } on FirebaseAuthException catch (e) {
                         setState(() {
                           isLoading = false;
                         });
