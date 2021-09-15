@@ -17,7 +17,7 @@ class _AddFaqState extends State<AddFaq> {
   bool isLoading = false;
   bool _isquestionValidate = false;
   bool _isanswerValidate = false;
-  String dropdownValue = 'Acquistion Section';
+  String dropdownValue = 'Acquisition Section';
 
   @override
   Widget build(BuildContext context) {
@@ -83,16 +83,20 @@ class _AddFaqState extends State<AddFaq> {
                   });
                 },
               ),
+              SizedBox(
+                height: 25,
+              ),
               TextField(
                 minLines: 2,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 controller: _faqQuestion,
                 decoration: InputDecoration(
-                    labelText: 'FAQ Question',
-                    errorText: _isquestionValidate
-                        ? 'Question field must be filled out'
-                        : null),
+                  labelText: 'FAQ Question',
+                  errorText: _isquestionValidate
+                      ? 'Question field must be filled out'
+                      : null,
+                ),
               ),
               SizedBox(
                 height: 25,
