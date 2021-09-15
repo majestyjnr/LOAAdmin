@@ -17,6 +17,7 @@ class _AddFaqState extends State<AddFaq> {
   bool isLoading = false;
   bool _isquestionValidate = false;
   bool _isanswerValidate = false;
+  String dropdownValue = 'Acquistion Section';
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +53,36 @@ class _AddFaqState extends State<AddFaq> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             children: <Widget>[
+              Text('Select Video Section:'),
+              DropdownButton<String>(
+                isExpanded: true,
+                value: dropdownValue,
+                items: <String>[
+                  'Acquisition Section',
+                  'Circulation Section',
+                  'Information Help Desk Section',
+                  'Lending Section',
+                  'Quick Reference Section',
+                  'Reference Section',
+                  'Security Section',
+                  'Special Section'
+                ].map<DropdownMenuItem<String>>(
+                  (String value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(value),
+                    );
+                  },
+                ).toList(),
+                onChanged: (String newLevel) {
+                  setState(() {
+                    dropdownValue = newLevel;
+                  });
+                },
+              ),
               TextField(
                 minLines: 2,
                 keyboardType: TextInputType.multiline,
@@ -118,6 +146,7 @@ class _AddFaqState extends State<AddFaq> {
                       FirebaseFirestore.instance.collection('FAQs').add({
                         'faqQuestion': _faqQuestion.text,
                         'faqAnswer': _faqAnswer.text,
+                        'section': dropdownValue,
                       }).then((value) {
                         setState(() {
                           isLoading = false;
