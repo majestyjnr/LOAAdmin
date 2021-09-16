@@ -56,7 +56,7 @@ class _AddFaqState extends State<AddFaq> {
           padding: const EdgeInsets.all(15.0),
           child: Column(
             children: <Widget>[
-              Text('Select Video Section:'),
+              Text('Select FAQ Section:'),
               DropdownButton<String>(
                 isExpanded: true,
                 value: dropdownValue,
