@@ -34,6 +34,21 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
+              Icons.chat
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return ChatRoomsList();
+                  },
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
               Icons.account_circle,
             ),
             onPressed: () {
