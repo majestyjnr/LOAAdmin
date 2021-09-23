@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens/dashboard/ChatScreen.dart';
 import 'package:LOAAdmin/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,33 +15,12 @@ class ChatRoomsList extends StatefulWidget {
 class _ChatRoomsListState extends State<ChatRoomsList> {
   Stream chatRoomsStream;
   String admin = 'admin';
-
-  // Widget chatRoomListTile(String name, String lastMessage) {
-  //   return Row(
-  //     children: [
-  //       Icon(
-  //         Icons.account_circle,
-  //         color: Colors.black,
-  //         size: 37,
-  //       ),
-  //       SizedBox(width: 25),
-  //       Column(
-  //         children: [
-  //           Text(""),
-  //           Text(lastMessage)
-  //         ],
-  //       )
-  //     ],
-  //   );
-  // }
-
   Widget chatRooms() {
     return StreamBuilder(
       stream: chatRoomsStream,
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.separated(
-                padding: EdgeInsets.only(bottom: 40, top: 0),
                 itemCount: snapshot.data.docs.length,
                 reverse: true,
                 shrinkWrap: true,
@@ -65,7 +45,7 @@ class _ChatRoomsListState extends State<ChatRoomsList> {
   }
 
   getChatRooms() async {
-    chatRoomsStream = await DatabaseModels().getChatRoomsList();
+    chatRoomsStream = await DatabaseMethods().getChatRoomsList();
     setState(() {});
   }
 
@@ -119,7 +99,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         widget.chatRoomId.replaceAll('admin', "").replaceAll("_", "");
 
     QuerySnapshot querySnapshot =
-        await DatabaseModels().getStudentInfo(studentEmail);
+        await DatabaseMethods().getStudentInfo(studentEmail);
     studentName = querySnapshot.docs[0]['firstName'] +
         ' ' +
         querySnapshot.docs[0]['lastName'];
@@ -145,7 +125,16 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
       subtitle: Text(
         widget.lastMessage,
       ),
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ChatScreen(studentName, studentEmail);
+            },
+          ),
+        );
+      },
     );
   }
 }
