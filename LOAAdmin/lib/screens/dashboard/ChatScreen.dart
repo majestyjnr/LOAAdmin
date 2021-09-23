@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens.dart';
 import 'package:LOAAdmin/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -199,7 +200,14 @@ class _ChatScreenState extends State<ChatScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ChatRoomsList();
+                },
+              ),
+            );
           },
         ),
         centerTitle: true,

@@ -1,3 +1,4 @@
+import 'package:LOAAdmin/screens.dart';
 import 'package:LOAAdmin/screens/dashboard/ChatScreen.dart';
 import 'package:LOAAdmin/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +23,7 @@ class _ChatRoomsListState extends State<ChatRoomsList> {
         return snapshot.hasData
             ? ListView.separated(
                 itemCount: snapshot.data.docs.length,
-                reverse: true,
+                // reverse: true,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
@@ -75,7 +76,11 @@ class _ChatRoomsListState extends State<ChatRoomsList> {
               color: Colors.blue,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return Dashboard();
+                },
+              ));
             },
           ),
         ),
