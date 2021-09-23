@@ -39,13 +39,19 @@ class _ChatRoomsListState extends State<ChatRoomsList> {
       stream: chatRoomsStream,
       builder: (context, snapshot) {
         return snapshot.hasData
-            ? ListView.builder(
-                padding: EdgeInsets.only(bottom: 40, top: 16),
+            ? ListView.separated(
+                padding: EdgeInsets.only(bottom: 40, top: 0),
                 itemCount: snapshot.data.docs.length,
                 reverse: true,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
                   return ChatRoomListTile(ds["lastMessage"], ds.id);
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    height: 0,
+                  );
                 },
               )
             : Center(
@@ -72,28 +78,28 @@ class _ChatRoomsListState extends State<ChatRoomsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        elevation: 0.5,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: Text(
-          'Chats',
-          style: TextStyle(
-            color: Colors.blue,
+        appBar: AppBar(
+          brightness: Brightness.light,
+          elevation: 0.5,
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            'Incoming Questions',
+            style: TextStyle(
+              color: Colors.blue,
+            ),
+          ),
+          leading: IconButton(
+            icon: Icon(
+              CupertinoIcons.back,
+              color: Colors.blue,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
-        leading: IconButton(
-          icon: Icon(
-            CupertinoIcons.back,
-            color: Colors.blue,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-    );
+        body: chatRooms());
   }
 }
 
@@ -106,7 +112,7 @@ class ChatRoomListTile extends StatefulWidget {
 }
 
 class _ChatRoomListTileState extends State<ChatRoomListTile> {
-  String studentEmail, studentName;
+  String studentEmail = "", studentName = "";
 
   getUserInfo() async {
     studentEmail =
@@ -118,25 +124,28 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         ' ' +
         querySnapshot.docs[0]['lastName'];
 
-    setState(() {
-      
-    });
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          Icons.account_circle,
-          color: Colors.black,
-          size: 37,
-        ),
-        SizedBox(width: 25),
-        Column(
-          children: [Text(studentName), Text(widget.lastMessage)],
-        )
-      ],
+    return ListTile(
+      leading: Icon(
+        Icons.account_circle,
+        color: Colors.blue,
+        size: 37,
+      ),
+      title: Text(studentName),
+      subtitle: Text(
+        widget.lastMessage,
+      ),
+      onTap: () {},
     );
   }
 }
