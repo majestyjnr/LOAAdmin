@@ -5,10 +5,11 @@ class DatabaseModels {
     return FirebaseFirestore.instance
         .collection("chatRooms")
         .orderBy("lastMessageTimeStamp", descending: true)
+        .where("users", arrayContains: 'admin')
         .snapshots();
   }
 
-  getStudentInfo(String studentEmail) async {
+  Future<QuerySnapshot> getStudentInfo(String studentEmail) async {
     return await FirebaseFirestore.instance
         .collection("users")
         .where('email', isEqualTo: studentEmail)
