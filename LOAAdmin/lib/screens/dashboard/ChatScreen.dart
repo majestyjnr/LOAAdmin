@@ -139,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 topRight: Radius.circular(24),
                 bottomLeft: sentByMe ? Radius.circular(24) : Radius.circular(0),
               ),
-              color: Colors.blue,
+              color: sentByMe ? Colors.blue : Colors.grey,
             ),
             padding: EdgeInsets.all(16),
             child: Column(
