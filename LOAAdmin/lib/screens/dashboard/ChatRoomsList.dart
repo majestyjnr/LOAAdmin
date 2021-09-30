@@ -129,6 +129,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
       title: Text(studentName),
       subtitle: Text(
         widget.lastMessage,
+        maxLines: 1,
       ),
       onTap: () {
         Navigator.push(

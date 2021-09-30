@@ -130,30 +130,23 @@ class _ChatScreenState extends State<ChatScreen> {
           sentByMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                bottomRight:
-                    sentByMe ? Radius.circular(0) : Radius.circular(24),
-                topRight: Radius.circular(24),
-                bottomLeft: sentByMe ? Radius.circular(24) : Radius.circular(0),
-              ),
-              color: sentByMe ? Colors.blue : Colors.blueGrey[50],
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              bottomRight: sentByMe ? Radius.circular(0) : Radius.circular(24),
+              topRight: Radius.circular(24),
+              bottomLeft: sentByMe ? Radius.circular(24) : Radius.circular(0),
             ),
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    message,
-                    style: TextStyle(
-                        color: sentByMe ? Colors.white : Colors.black),
-                  ),
-                ),
-              ],
-            )),
+            color: sentByMe ? Colors.blue : Colors.blueGrey[50],
+          ),
+          width: MediaQuery.of(context).size.width * 0.60,
+          padding: EdgeInsets.all(16),
+          child: Text(
+            message,
+            style: TextStyle(color: sentByMe ? Colors.white : Colors.black),
+          ),
+        ),
       ],
     );
   }
@@ -184,11 +177,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   getAndSetMessages() async {
-    print('My chatRoomId is . $chatRoomId');
-
     messageStream = await DatabaseMethods().getChatRoomMessages(chatRoomId);
     setState(() {});
-    print('My name is Solomon. $messageStream');
   }
 
   @override
